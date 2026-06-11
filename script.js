@@ -1347,6 +1347,13 @@ function checkDisclaimer() {
       modal.classList.remove("hidden");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
+      
+      // Auto close after 3 seconds (3000ms) and save preference
+      setTimeout(() => {
+        if (modal && !modal.classList.contains("hidden")) {
+          acceptDisclaimer();
+        }
+      }, 3000);
     }
   }
 }

@@ -49,7 +49,9 @@
               src="logo/Logo-PNG.png"
               alt="MAD WATCH TV Logo"
               class="brand-logo"
+              onerror="this.style.display='none'; document.getElementById('brandLogoFallback').classList.remove('hidden');"
             />
+            <div id="brandLogoFallback" class="brand-logo-fallback hidden">MW</div>
             <h1 class="logo">MAD WATCH <span>TV</span></h1>
           </div>
 
@@ -288,7 +290,9 @@
                     src="logo/Logo-PNG.png"
                     alt="MAD WATCH TV Logo"
                     class="footer-brand-logo"
+                    onerror="this.style.display='none'; document.getElementById('footerLogoFallback').classList.remove('hidden');"
                   />
+                  <div id="footerLogoFallback" class="footer-logo-fallback hidden">MW</div>
                   <span class="logo footer-logo">MAD WATCH <span>TV</span></span>
                 </div>
                 <p class="footer-desc">
@@ -614,9 +618,9 @@
 
     <!-- Disclaimer Modal -->
     <div id="disclaimerModal" class="custom-modal hidden" aria-hidden="true">
-      <div class="custom-modal-overlay" onclick="closeDisclaimerModal()"></div>
+      <div class="custom-modal-overlay" onclick="acceptDisclaimer()"></div>
       <div class="custom-modal-card disclaimer-card">
-        <button class="custom-modal-close-btn" onclick="closeDisclaimerModal()" aria-label="Close">
+        <button class="custom-modal-close-btn" onclick="acceptDisclaimer()" aria-label="Close">
           <i class="fa-solid fa-xmark"></i>
         </button>
         <div class="custom-modal-header disclaimer-header">
@@ -643,7 +647,13 @@
         <button class="banner-close-btn" onclick="closeAppBanner()" aria-label="Close Banner">
           <i class="fa-solid fa-xmark"></i>
         </button>
-        <img src="logo/Logo-PNG.png" alt="MAD WATCH TV Logo" class="banner-logo" />
+        <img
+          src="logo/Logo-PNG.png"
+          alt="MAD WATCH TV Logo"
+          class="banner-logo"
+          onerror="this.style.display='none'; document.getElementById('bannerLogoFallback').classList.remove('hidden');"
+        />
+        <div id="bannerLogoFallback" class="banner-logo-fallback hidden">MW</div>
         <div class="banner-text">
           <h4>MAD WATCH TV Android App</h4>
           <p>সেরা পারফরম্যান্স ও লাইভ চ্যানেল দেখতে অ্যাপ ডাউনলোড করুন।</p>
