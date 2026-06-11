@@ -5,8 +5,8 @@
 # 📺 MAD WATCH TV - Premium Live Streaming Platform
 
 <p align="center">
-  <a href="https://github.com/Shariar-Ahamed/online-tv-streaming-platform/releases"><img src="https://img.shields.io/badge/Download-MADWatchTV--v1.1.2.apk-brightgreen?style=for-the-badge&logo=android&logoColor=white" alt="Download APK"></a>
-  <a href="https://shariar-ahamed.github.io/online-tv-streaming-platform/"><img src="https://img.shields.io/badge/Live-Web%20Demo-ff007f?style=for-the-badge&logo=livewire&logoColor=white" alt="Live Demo"></a>
+  <a href="https://github.com/programingbot255/MADTV/releases"><img src="https://img.shields.io/badge/Download-MADWatchTV--v1.1.2.apk-brightgreen?style=for-the-badge&logo=android&logoColor=white" alt="Download APK"></a>
+  <a href="https://github.com/programingbot255/MADTV"><img src="https://img.shields.io/badge/Live-Web%20Demo-ff007f?style=for-the-badge&logo=livewire&logoColor=white" alt="Live Demo"></a>
 </p>
 
 <p align="center">
@@ -17,13 +17,13 @@
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/repo-size/Shariar-Ahamed/online-tv-streaming-platform">
-  <img src="https://img.shields.io/github/last-commit/Shariar-Ahamed/online-tv-streaming-platform">
+  <img src="https://img.shields.io/github/repo-size/programingbot255/MADTV">
+  <img src="https://img.shields.io/github/last-commit/programingbot255/MADTV">
 </p>
 
 <p align="center">
-  <img src="https://img.shields.io/github/stars/Shariar-Ahamed/online-tv-streaming-platform?style=social">
-  <img src="https://img.shields.io/github/forks/Shariar-Ahamed/online-tv-streaming-platform?style=social">
+  <img src="https://img.shields.io/github/stars/programingbot255/MADTV?style=social">
+  <img src="https://img.shields.io/github/forks/programingbot255/MADTV?style=social">
 </p>
 
 ---
@@ -48,7 +48,7 @@ Below are the technical specifications of the native Android application package
 | 🎯 **Target SDK**              | Android 15 / 16 (API Level 36)                                                             |
 | 🎮 **Category**                | Entertainment / Live TV Streaming                                                          |
 | 🌍 **Supported Architectures** | `universal` (arm64-v8a, armeabi-v7a, x86, x86_64)                                          |
-| 🚀 **Releases Directory**      | [GitHub Releases](https://github.com/Shariar-Ahamed/online-tv-streaming-platform/releases) |
+| 🚀 **Releases Directory**      | [GitHub Releases](https://github.com/programingbot255/MADTV/releases) |
 
 ---
 
@@ -173,8 +173,8 @@ mad-watch-tv/
 ### 1️⃣ Clone the Repository
 
 ```bash
-git clone https://github.com/Shariar-Ahamed/online-tv-streaming-platform.git
-cd online-tv-streaming-platform
+git clone https://github.com/programingbot255/MADTV.git
+cd MADTV
 ```
 
 ### 2️⃣ Run locally with Vite

@@ -1,6 +1,6 @@
 /* VARIABLES */
 // const playlistOnline = "channels.m3u";
-const playlistOnline = "https://raw.githubusercontent.com/Shariar-Ahamed/online-tv-streaming-platform/main/channels.m3u";
+const playlistOnline = "https://raw.githubusercontent.com/programingbot255/MADTV/main/channels.m3u";
 const playlistLocal = "channels.m3u";
 
 let channels = [];
@@ -1168,12 +1168,12 @@ function setupViewModeToggle() {
 }
 
 /* MOBILE SMART APP BANNER & DYNAMIC APK DOWNLOAD */
-let latestApkUrl = "https://github.com/Shariar-Ahamed/online-tv-streaming-platform/releases";
+let latestApkUrl = "https://github.com/programingbot255/MADTV/releases";
 
 function setupMobileAppBanner() {
   if (window.Capacitor) return;
 
-  fetch("https://api.github.com/repos/Shariar-Ahamed/online-tv-streaming-platform/releases/latest")
+  fetch("https://api.github.com/repos/programingbot255/MADTV/releases/latest")
     .then(response => {
       if (!response.ok) throw new Error("GitHub API error");
       return response.json();
@@ -1220,7 +1220,7 @@ const currentBuildCode = 13; // Matches version 1.1.2 build code
 function checkForUpdates() {
   if (!window.Capacitor) return;
 
-  const configUrl = "https://raw.githubusercontent.com/Shariar-Ahamed/online-tv-streaming-platform/main/app-update.json";
+  const configUrl = "https://raw.githubusercontent.com/programingbot255/MADTV/main/app-update.json";
 
   fetch(configUrl)
     .then(response => {
