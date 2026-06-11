@@ -2,7 +2,7 @@ const fs = require('fs');
 const path = require('path');
 
 const srcDir = __dirname;
-const destDir = path.join(__dirname, 'dist');
+const destDir = path.join(__dirname, 'www');
 
 function copyDirSync(src, dest) {
   if (!fs.existsSync(dest)) {
@@ -20,12 +20,13 @@ function copyDirSync(src, dest) {
   }
 }
 
-// Ensure destDir exists
-if (!fs.existsSync(destDir)) {
-  fs.mkdirSync(destDir, { recursive: true });
+// 1. Clean and create www
+if (fs.existsSync(destDir)) {
+  fs.rmSync(destDir, { recursive: true, force: true });
 }
+fs.mkdirSync(destDir, { recursive: true });
 
-// Copy other files
+// 2. Files to copy
 const filesToCopy = [
   'index.html',
   'script.js',
@@ -39,11 +40,11 @@ for (const file of filesToCopy) {
   const srcFile = path.join(srcDir, file);
   if (fs.existsSync(srcFile)) {
     fs.copyFileSync(srcFile, path.join(destDir, file));
-    console.log(`Copied ${file} to dist/`);
+    console.log(`Copied ${file} to www/`);
   }
 }
 
-// Apply cache busting to copied files in dist/
+// Apply cache busting to copied files in www/
 let version = '1.1.2';
 try {
   const pkg = JSON.parse(fs.readFileSync(path.join(srcDir, 'package.json'), 'utf8'));
@@ -60,7 +61,7 @@ if (fs.existsSync(destHtmlPath)) {
   html = html.replace(/href="style\.css"/g, `href="style.css${cacheBustSuffix}"`);
   html = html.replace(/src="script\.js"/g, `src="script.js${cacheBustSuffix}"`);
   fs.writeFileSync(destHtmlPath, html, 'utf8');
-  console.log(`Cache-busted index.html template with suffix ${cacheBustSuffix}`);
+  console.log(`Cache-busted index.html template in www/ with suffix ${cacheBustSuffix}`);
 }
 
 const destScriptPath = path.join(destDir, 'script.js');
@@ -68,15 +69,17 @@ if (fs.existsSync(destScriptPath)) {
   let js = fs.readFileSync(destScriptPath, 'utf8');
   js = js.replace(/const playlistLocal = "channels\.m3u";/g, `const playlistLocal = "channels.m3u${cacheBustSuffix}";`);
   fs.writeFileSync(destScriptPath, js, 'utf8');
-  console.log(`Cache-busted script.js playlistLocal config with suffix ${cacheBustSuffix}`);
+  console.log(`Cache-busted script.js playlistLocal config in www/ with suffix ${cacheBustSuffix}`);
 }
 
-// Copy folders
+// 3. Folders to copy
 const foldersToCopy = ['logo'];
 for (const folder of foldersToCopy) {
   const srcFolder = path.join(srcDir, folder);
   if (fs.existsSync(srcFolder)) {
     copyDirSync(srcFolder, path.join(destDir, folder));
-    console.log(`Copied directory ${folder} to dist/`);
+    console.log(`Copied directory ${folder} to www/`);
   }
 }
+
+console.log('Build completed! Files are in the www/ directory.');

@@ -23,7 +23,7 @@ try {
   // 3. Run Postbuild (Copies to dist/)
   console.log('Running postbuild script...');
   if (fs.existsSync('postbuild.js')) {
-    require('./postbuild.js');
+    execSync('node postbuild.js', { stdio: 'inherit' });
     console.log('Postbuild completed.');
   } else {
     console.log('Warning: postbuild.js not found.');
@@ -32,7 +32,7 @@ try {
   // 4. Run Build (Copies to www/)
   console.log('Running build script to generate www/ directory...');
   if (fs.existsSync('build.js')) {
-    require('./build.js');
+    execSync('node build.js', { stdio: 'inherit' });
     console.log('Build script completed successfully.');
   } else {
     console.log('Warning: build.js not found.');

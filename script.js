@@ -243,13 +243,18 @@ function loadPlaylist() {
   fetch(`${playlistOnline}?t=${new Date().getTime()}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error("Online playlist response error");
+        throw new Error("Online playlist response error (status: " + response.status + ")");
       }
       return response.text();
     })
     .catch(err => {
-      console.log("Could not load online playlist, falling back to local file...", err);
-      return fetch(playlistLocal).then(response => response.text());
+      console.warn("Could not load online playlist, falling back to local file...", err);
+      return fetch(playlistLocal).then(response => {
+        if (!response.ok) {
+          throw new Error("Local fallback playlist response error (status: " + response.status + ")");
+        }
+        return response.text();
+      });
     })
     .then((data) => {
       const lines = data.split("\n");
@@ -300,6 +305,10 @@ function loadPlaylist() {
         }
       }
 
+      if (channels.length === 0) {
+        throw new Error("No channels parsed from the playlist");
+      }
+
       loader.classList.add("hidden");
       renderCategories();
       filterAndSearch();
@@ -310,7 +319,8 @@ function loadPlaylist() {
       }
     })
     .catch(err => {
-      console.error("Failed to load playlist", err);
+      console.error("Failed to load playlist:", err);
+      loader.classList.remove("hidden");
       loader.querySelector("span").innerText = "Failed to load playlist ⚠️";
     });
 }
