@@ -63,14 +63,6 @@ if (fs.existsSync(destHtmlPath)) {
   console.log(`Cache-busted index.html template with suffix ${cacheBustSuffix}`);
 }
 
-const destScriptPath = path.join(destDir, 'script.js');
-if (fs.existsSync(destScriptPath)) {
-  let js = fs.readFileSync(destScriptPath, 'utf8');
-  js = js.replace(/const playlistLocal = "channels\.m3u";/g, `const playlistLocal = "channels.m3u${cacheBustSuffix}";`);
-  fs.writeFileSync(destScriptPath, js, 'utf8');
-  console.log(`Cache-busted script.js playlistLocal config with suffix ${cacheBustSuffix}`);
-}
-
 // Copy folders
 const foldersToCopy = ['logo'];
 for (const folder of foldersToCopy) {
