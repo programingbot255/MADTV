@@ -1,11 +1,11 @@
 <p align="center">
-  <img src="assets/Readme.md-cover.png" alt="Alpha TV Cover Page" width="100%" style="border-radius: 12px; margin-bottom: 20px;">
+  <img src="assets/Readme.md-cover.png" alt="MAD WATCH TV Cover Page" width="100%" style="border-radius: 12px; margin-bottom: 20px;" onerror="this.src='logo/Logo-PNG.png';">
 </p>
 
-# 📺 Alpha TV - Premium Live Streaming Platform
+# 📺 MAD WATCH TV - Premium Live Streaming Platform
 
 <p align="center">
-  <a href="https://github.com/Shariar-Ahamed/online-tv-streaming-platform/releases"><img src="https://img.shields.io/badge/Download-AlphaTV--v1.1.2.apk-brightgreen?style=for-the-badge&logo=android&logoColor=white" alt="Download APK"></a>
+  <a href="https://github.com/Shariar-Ahamed/online-tv-streaming-platform/releases"><img src="https://img.shields.io/badge/Download-MADWatchTV--v1.1.2.apk-brightgreen?style=for-the-badge&logo=android&logoColor=white" alt="Download APK"></a>
   <a href="https://shariar-ahamed.github.io/online-tv-streaming-platform/"><img src="https://img.shields.io/badge/Live-Web%20Demo-ff007f?style=for-the-badge&logo=livewire&logoColor=white" alt="Live Demo"></a>
 </p>
 
@@ -26,15 +26,11 @@
   <img src="https://img.shields.io/github/forks/Shariar-Ahamed/online-tv-streaming-platform?style=social">
 </p>
 
-<p align="center">
-  <a href="https://wakatime.com/badge/user/c7433bc5-6f12-4c97-baea-430790fa608c/project/d5fc1849-63b0-4df6-8d52-fe8d5b2162e8"><img src="https://wakatime.com/badge/user/c7433bc5-6f12-4c97-baea-430790fa608c/project/d5fc1849-63b0-4df6-8d52-fe8d5b2162e8.svg" alt="wakatime"></a>
-</p>
-
 ---
 
 ## 📖 Overview
 
-**Alpha TV** is a premium, modern, and highly responsive online Live TV streaming platform. It packages a cyber-dark, glassmorphic Web App into a lightweight native Android App using the Capacitor framework. Featuring a dual-mode layout (2D Flat & 3D Neumorphic), dynamic M3U parsing, HLS streaming playback, and an intelligent channel navigation system, Alpha TV brings local and international television straight to your pocket.
+**MAD WATCH TV** is a premium, modern, and highly responsive online Live TV streaming platform. It packages a cyber-dark, glassmorphic Web App into a lightweight native Android App using the Capacitor framework. Featuring a dual-mode layout (2D Flat & 3D Neumorphic), dynamic M3U parsing, HLS streaming playback, and an intelligent channel navigation system, MAD WATCH TV brings local and international television straight to your pocket.
 
 ---
 
@@ -44,8 +40,8 @@ Below are the technical specifications of the native Android application package
 
 | Specification                  | Details                                                                                    |
 | ------------------------------ | ------------------------------------------------------------------------------------------ |
-| 📦 **App Name**                | `AlphaTV-v1.1.2.apk`                                                                       |
-| 🆔 **Package Name**            | `com.alphatv.app`                                                                          |
+| 📦 **App Name**                | `MADWatchTV-v1.1.2.apk`                                                                    |
+| 🆔 **Package Name**            | `com.madwatchtv.app`                                                                       |
 | 🏷️ **Current Version**         | `1.1.2` (Build Code `13`)                                                                  |
 | 📂 **App Size**                | ~31.1 MB                                                                                   |
 | ⚙️ **Minimum OS Support**      | Android 7.0 (Nougat - API Level 24) or higher                                              |
@@ -68,7 +64,7 @@ Below are the technical specifications of the native Android application package
 
 ### ⭐ Favorites Channel List (Bookmarking)
 
-- **Real-Time Bookmarks:** Tap the golden star icon on any channel card to add it to your Favorites list instantly.
+- **Real-Time Bookmarks:** Tap the golden star icon on any channel card or directly in the Player Title area to add it to your Favorites list instantly.
 - **Persistent Storage:** Bookmarks are saved locally in the browser/app `localStorage`, persisting across page reloads and app restarts.
 - **Empty Notice:** A premium empty state helper instructs users how to start favoriting channels.
 - **Custom Categories Sequence:** Ordered such that `Favorites` ➔ `All Channels` ➔ `Sports` ➔ `Bangla` are prioritized first in the filter bar.
@@ -86,6 +82,22 @@ Below are the technical specifications of the native Android application package
 - **Clean Header:** The top header on mobile is kept neat and spacious, placing the logo on the left and the 2D/3D toggle cleanly on the right.
 - **Header Live Counter:** Relocated to the active channel details card, sitting horizontally side-by-side with the green `LIVE` badge on the top row of the card for a cohesive, balanced mobile interface.
 
+### 🔊 Custom Playback, Volume & Quality Controls
+
+- **Precision Sound Adjustments:** Integrated custom ambient volume ranges, featuring interactive slider thumbs and smart quick-toggle mute states.
+- **Real-Time Stream Resolution Extraction:** Automatically reads incoming media streams to dynamically show high-definition resolution badges (e.g. `1080p FHD`, `720p HD`, `4K UHD`).
+- **Interactive Keyboard Control Platform:** Built-in listener coordinates global desktop keys effortlessly:
+  - `Spacebar`: Toggle Play/Pause states instantly.
+  - `ArrowUp`/`ArrowDown`: Precise incremental volume level tuning.
+  - `ArrowLeft`/`ArrowRight`: Seamless channel cycling.
+  - `M` / `m`: Instant stream mute toggle.
+  - `F` / `f`: Fast cinema fullscreen display.
+
+### 🤖 Brand Fallback Identity & Optimized Disclaimers
+
+- **Visual Resilience:** Broken logo links and initial loading screens automatically gracefully degrade into beautiful purple-neon glassmorphic brand logo badges.
+- **Streamlined User Validation:** The stream liability disclaimer features a non-intrusive 3-second auto-close mechanism, combined with a close (`×`) button for instant playability.
+
 ### 📺 Integrated HLS Player
 
 - Native HLS `.m3u8` live stream decoding powered by `HLS.js`.
@@ -94,7 +106,7 @@ Below are the technical specifications of the native Android application package
 
 ### 🗂️ Smart M3U Playlist Parsing & Categories
 
-- Automatically parses [channels.m3u](file:///e:/Git%20All%20Repo/online-tv-streaming-platform/channels.m3u) on startup.
+- Automatically parses `channels.m3u` on startup.
 - Dynamically generates categories and sorts items with an inline swipeable category pill carousel.
 - Rounded picture logo formatting (`border-radius: 10px`) across both 2D and 3D states.
 - Beautiful custom-generated gradient avatars as fallback icons for channels with broken logo links.
@@ -104,9 +116,10 @@ Below are the technical specifications of the native Android application package
 ## 🛠️ Technology Stack
 
 - **Frontend Core:** HTML5, Vanilla CSS3 (Glassmorphism & Neumorphic Shadow Systems), ES6+ JavaScript.
+- **Compiler/Builder:** Vite, Rollup, PostCSS.
 - **Streaming engine:** `HLS.js` library.
 - **Icons:** FontAwesome v6.
-- **Native Wrapper:** Capacitor CLI + Capacitor Android Core.
+- **Native Wrapper:** SDK platforms configured with Capacitor CLI + Capacitor Android Core.
 
 ---
 
@@ -115,15 +128,15 @@ Below are the technical specifications of the native Android application package
 ### 💻 Laptop & Desktop View
 
 <p align="center">
-  <img src="assets/laptop-view.png" alt="Laptop Preview" width="80%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+  <img src="assets/laptop-view.png" alt="Laptop Preview" width="80%" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" onerror="this.style.display='none';">
 </p>
 
 ### 📲 Tablet & Mobile View
 
 <p align="center">
-  <img src="assets/tab-view.png" width="45%" alt="Tablet Preview" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+  <img src="assets/tab-view.png" width="45%" alt="Tablet Preview" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" onerror="this.style.display='none';">
   &nbsp;&nbsp;&nbsp;&nbsp;
-  <img src="assets/phone-view.png" width="28%" alt="Mobile Preview" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);">
+  <img src="assets/phone-view.png" width="28%" alt="Mobile Preview" style="border-radius: 12px; box-shadow: 0 8px 30px rgba(0,0,0,0.5);" onerror="this.style.display='none';">
 </p>
 
 ---
@@ -131,10 +144,14 @@ Below are the technical specifications of the native Android application package
 ## 📂 Project Directory Structure
 
 ```bash
-online-tv-streaming-platform/
+mad-watch-tv/
 │
 ├── 📂 android/               # Native Android Studio Project
 │   └── app/build.gradle      # Android compilation & SDK target configurations
+│
+├── 📂 src/                   # Source TS modules & configurations
+│   ├── vite.config.ts        # Fast building bundler configuration
+│   └── db/                   # Database schemas
 │
 ├── 📂 www/                   # Web Build Output directory
 │   ├── index.html
@@ -160,29 +177,29 @@ git clone https://github.com/Shariar-Ahamed/online-tv-streaming-platform.git
 cd online-tv-streaming-platform
 ```
 
-### 2️⃣ Run locally with Live Server
+### 2️⃣ Run locally with Vite
 
-1. Open the project in Visual Studio Code.
-2. Ensure you have the **Live Server** extension installed.
-3. Right-click inside `index.html` and select **Open with Live Server**.
-4. Access the web app at `http://127.0.0.1:5500`.
+```bash
+# Install node dependencies
+npm install
+
+# Run Vite dev server (runs on port 3000)
+npm run dev
+```
 
 ### 3️⃣ Build and Sync to Android (Capacitor)
 
 If you want to package the app and prepare it for Android builds:
 
 ```bash
-# Install node dependencies
-npm install
-
-# Run the project builder script (copies files to www/)
-node build.js
+# Run the project build script
+npm run build
 
 # Sync built files to the native Android directory
-npx cap sync
+npm run sync
 
 # Open the Android Studio project to compile the APK
-npx cap open android
+npm run android:open
 ```
 
 ---
@@ -190,6 +207,9 @@ npx cap open android
 ## 📋 Release History & Changelog
 
 ### 🚀 v1.1.2 (Current Release) - Build Code `13`
+* **Custom Desktop Experience Optimization:**
+  * Integrated dedicated volume ranges, dynamic stream resolution badges, direct player bookmarks, keyboard Hotkeys (Play, Mute, Volume adjustments, Previous/Next navigation).
+  * Added 3-second auto-dimming visitor overlays and responsive neon/glassmorphic cover identities.
 * **Automatic Picture-in-Picture (PiP) Mode:**
   * Enabled Picture-in-Picture capability for both the Web application and the native Android App wrapper.
   * Pressing the **Home button** in mobile browsers or **Home / Back buttons** inside the Android App will automatically transition the playing stream into a floating PiP window.
@@ -212,7 +232,7 @@ npx cap open android
 ### 🚀 v1.0.9 - Build Code `10`
 * **First-Time Visitor Disclaimer Modal:**
   * Implemented an overlay popup modal to display streaming/liability disclaimers for first-time visitors.
-  * Integrated `localStorage` visitor tracking (`alpha_tv_disclaimer_accepted`) so the popup appears only once per browser/app installation.
+  * Integrated `localStorage` visitor tracking so the popup appears only once per browser/app installation.
 * **UI Refinements & Sizing Alignment:**
   * Aligned Disclaimer modal sizing and responsive layout (`max-width: 500px`) to perfectly match the Privacy Policy modal.
   * Added flex layout, vertical alignment, and a subtle border divider underneath the disclaimer header.
@@ -222,14 +242,6 @@ npx cap open android
 ### 🚀 v1.0.8 - Build Code `9`
 * **Favorites Channel List:** Added favorite list support with custom golden star toggle design.
 * **Categories Reordering:** Favorites ➔ All Channels ➔ Sports ➔ Bangla.
-
----
-
-## 🔗 Useful Links
-
-- **Latest APK Release:** [Download AlphaTV-v1.1.2.apk](https://github.com/Shariar-Ahamed/online-tv-streaming-platform/releases)
-- **Live Web App:** [Alpha TV Live Web App](https://shariar-ahamed.github.io/online-tv-streaming-platform/)
-- **Source Code Repository:** [GitHub Repository](https://github.com/Shariar-Ahamed/online-tv-streaming-platform)
 
 ---
 
