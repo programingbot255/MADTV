@@ -104,6 +104,27 @@
             >
               <i class="fa-solid fa-forward-step"></i>
             </button>
+            <div class="volume-control-wrapper">
+              <button
+                class="control-btn volume-mute-btn"
+                id="volumeMuteBtn"
+                onclick="toggleMute()"
+                title="Mute / Unmute"
+              >
+                <i class="fa-solid fa-volume-high"></i>
+              </button>
+              <input
+                type="range"
+                id="volumeSlider"
+                class="volume-range-slider"
+                min="0"
+                max="1"
+                step="0.05"
+                value="1"
+                oninput="setVolume(this.value)"
+                title="Volume"
+              />
+            </div>
             <button
               class="control-btn"
               onclick="toggleFullscreen()"
@@ -132,6 +153,9 @@
               <span class="live-badge">
                 <span class="live-dot"></span> LIVE
               </span>
+              <span id="streamResolutionBadge" class="resolution-badge hidden">
+                <i class="fa-solid fa-display"></i> <span id="streamResolutionText">--</span>
+              </span>
               <!-- Mini Live Counter (Visible on mobile only, aligned side-by-side with LIVE badge) -->
               <div class="header-live-badge">
                 <div class="header-stat-item">
@@ -146,7 +170,12 @@
                 </div>
               </div>
             </div>
-            <h2 id="currentChannelTitle">Select a channel</h2>
+            <div class="current-channel-title-row">
+              <h2 id="currentChannelTitle">Select a channel</h2>
+              <button id="currentChannelFavBtn" class="current-fav-btn" onclick="toggleCurrentChannelFavorite()" title="Add to Favorites" style="display: none;">
+                <i class="fa-regular fa-star"></i>
+              </button>
+            </div>
             <p id="currentChannelCategory">M3U Stream Player</p>
           </div>
         </div>

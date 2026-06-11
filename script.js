@@ -23,6 +23,7 @@ let controlsTimeout;
 /* ON INITIALIZATION */
 document.addEventListener("DOMContentLoaded", () => {
   setupPlayerSync();
+  setupKeyboardShortcuts();
   setupControlAutohide();
   setupFullscreenChange();
   setupCategoryScrolling();
@@ -128,10 +129,12 @@ function openExternalUrl(url) {
   }
 }
 
-/* SYNC VIDEO STATE WITH PLAY/PAUSE BUTTON */
+/* SYNC VIDEO STATE WITH PLAY/PAUSE BUTTON AND SETUP VOLUME & QUALITY */
 function setupPlayerSync() {
   const video = document.getElementById("video");
   const playPauseBtn = document.querySelector(".play-pause-btn");
+  const resolutionBadge = document.getElementById("streamResolutionBadge");
+  const resolutionText = document.getElementById("streamResolutionText");
 
   video.addEventListener("play", () => {
     playPauseBtn.innerHTML = '<i class="fa-solid fa-pause"></i>';
@@ -153,6 +156,64 @@ function setupPlayerSync() {
     }
     nextChannel();
   });
+
+  // Dynamic Stream Resolution Extraction
+  function updateResolution() {
+    if (video.videoWidth > 0 && video.videoHeight > 0) {
+      const height = video.videoHeight;
+      const width = video.videoWidth;
+      let label = `${height}p`;
+      if (height >= 2160 || width >= 3840) {
+        label = "4K UHD";
+      } else if (height >= 1440 || width >= 2560) {
+        label = "1440p 2K";
+      } else if (height >= 1080) {
+        label = "1080p FHD";
+      } else if (height >= 720) {
+        label = "720p HD";
+      } else if (height >= 480) {
+        label = "480p SD";
+      } else if (height >= 360) {
+        label = "360p";
+      } else if (height > 0) {
+        label = `${height}p`;
+      }
+      resolutionText.innerText = label;
+      resolutionBadge.classList.remove("hidden");
+    } else {
+      resolutionBadge.classList.add("hidden");
+    }
+  }
+
+  video.addEventListener("resize", updateResolution);
+  video.addEventListener("loadedmetadata", updateResolution);
+  video.addEventListener("playing", updateResolution);
+  video.addEventListener("emptied", () => {
+    resolutionBadge.classList.add("hidden");
+    resolutionText.innerText = "--";
+  });
+
+  // LocalStorage Preferred Volume initialization
+  const savedVolume = localStorage.getItem("mad_watch_tv_preferred_volume");
+  const savedMuted = localStorage.getItem("mad_watch_tv_preferred_muted");
+  const volumeSlider = document.getElementById("volumeSlider");
+
+  let volumeLevel = 1.0;
+  if (savedVolume !== null) {
+    volumeLevel = parseFloat(savedVolume);
+  }
+  video.volume = volumeLevel;
+  if (volumeSlider) {
+    volumeSlider.value = volumeLevel;
+  }
+
+  if (savedMuted === "true") {
+    video.muted = true;
+    updateMuteButtonUI(true);
+  } else {
+    video.muted = false;
+    updateMuteButtonUI(false, volumeLevel);
+  }
 }
 
 /* AUTO-HIDE PLAYER CONTROLS */
@@ -621,6 +682,8 @@ function updateCurrentInfoCard(channel) {
     fallback.style.background = getFallbackGradient(channel.name);
     fallback.classList.remove("hidden");
   }
+
+  updateFavButtonState();
 }
 
 /* PLAY NEXT CHANNEL IN ACTIVE LIST */
@@ -1336,4 +1399,153 @@ function setupPictureInPicture() {
       document.body.classList.remove("pip-active");
     }
   };
+}
+
+/* VOLUME UTILS */
+function setVolume(value) {
+  const video = document.getElementById("video");
+  const volumeSlider = document.getElementById("volumeSlider");
+  const parsedValue = parseFloat(value);
+  
+  video.volume = parsedValue;
+  if (parsedValue > 0) {
+    video.muted = false;
+  }
+  
+  localStorage.setItem("mad_watch_tv_preferred_volume", parsedValue);
+  localStorage.setItem("mad_watch_tv_preferred_muted", video.muted ? "true" : "false");
+  
+  updateMuteButtonUI(video.muted, parsedValue);
+}
+
+function toggleMute() {
+  const video = document.getElementById("video");
+  const volumeSlider = document.getElementById("volumeSlider");
+  
+  video.muted = !video.muted;
+  localStorage.setItem("mad_watch_tv_preferred_muted", video.muted ? "true" : "false");
+  
+  if (video.muted) {
+    updateMuteButtonUI(true);
+  } else {
+    const savedVolume = localStorage.getItem("mad_watch_tv_preferred_volume") || "1";
+    video.volume = parseFloat(savedVolume);
+    if (volumeSlider) {
+      volumeSlider.value = savedVolume;
+    }
+    updateMuteButtonUI(false, video.volume);
+  }
+}
+
+function updateMuteButtonUI(muted, level) {
+  const muteBtn = document.getElementById("volumeMuteBtn");
+  if (!muteBtn) return;
+  
+  if (muted || level === 0) {
+    muteBtn.innerHTML = '<i class="fa-solid fa-volume-xmark"></i>';
+    muteBtn.classList.add("muted");
+  } else if (level >= 0.5) {
+    muteBtn.innerHTML = '<i class="fa-solid fa-volume-high"></i>';
+    muteBtn.classList.remove("muted");
+  } else {
+    muteBtn.innerHTML = '<i class="fa-solid fa-volume-low"></i>';
+    muteBtn.classList.remove("muted");
+  }
+}
+
+/* GLOBAL KEYBOARD SHORTCUTS */
+function setupKeyboardShortcuts() {
+  window.addEventListener("keydown", (e) => {
+    if (
+      document.activeElement.tagName === "INPUT" ||
+      document.activeElement.tagName === "TEXTAREA" ||
+      document.activeElement.isContentEditable
+    ) {
+      return;
+    }
+    
+    const video = document.getElementById("video");
+    const volumeSlider = document.getElementById("volumeSlider");
+    
+    switch (e.key) {
+      case " ": 
+        e.preventDefault();
+        togglePlay();
+        break;
+        
+      case "ArrowLeft": 
+        e.preventDefault();
+        prevChannel();
+        break;
+        
+      case "ArrowRight": 
+        e.preventDefault();
+        nextChannel();
+        break;
+        
+      case "ArrowUp": 
+        e.preventDefault();
+        let newVolumeUp = Math.min(1.0, video.volume + 0.05);
+        video.volume = newVolumeUp;
+        if (volumeSlider) volumeSlider.value = newVolumeUp;
+        setVolume(newVolumeUp);
+        break;
+        
+      case "ArrowDown": 
+        e.preventDefault();
+        let newVolumeDown = Math.max(0.0, video.volume - 0.05);
+        video.volume = newVolumeDown;
+        if (volumeSlider) volumeSlider.value = newVolumeDown;
+        setVolume(newVolumeDown);
+        break;
+        
+      case "m":
+      case "M": 
+        e.preventDefault();
+        toggleMute();
+        break;
+        
+      case "f":
+      case "F": 
+        e.preventDefault();
+        toggleFullscreen();
+        break;
+    }
+  });
+}
+
+/* CURRENT CHANNEL FAVORITE LOGIC */
+function updateFavButtonState() {
+  const favBtn = document.getElementById("currentChannelFavBtn");
+  if (!favBtn || !currentChannel) return;
+  
+  favBtn.style.display = "flex";
+  
+  const isFav = favorites.includes(currentChannel.url);
+  if (isFav) {
+    favBtn.classList.add("is-favorite");
+    favBtn.innerHTML = '<i class="fa-solid fa-star"></i>';
+    favBtn.setAttribute("title", "Remove from Favorites");
+  } else {
+    favBtn.classList.remove("is-favorite");
+    favBtn.innerHTML = '<i class="fa-regular fa-star"></i>';
+    favBtn.setAttribute("title", "Add to Favorites");
+  }
+}
+
+function toggleCurrentChannelFavorite() {
+  if (!currentChannel) return;
+  
+  const url = currentChannel.url;
+  const index = favorites.indexOf(url);
+  if (index === -1) {
+    favorites.push(url);
+  } else {
+    favorites.splice(index, 1);
+  }
+  
+  localStorage.setItem("mad_watch_tv_favorites", JSON.stringify(favorites));
+  updateFavoritesCount();
+  updateFavButtonState();
+  filterAndSearch();
 }
