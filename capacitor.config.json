@@ -1,7 +1,7 @@
 {
   "appId": "com.madwatchtv.app",
   "appName": "MAD WATCH TV",
-  "webDir": "www",
+  "webDir": "dist",
   "server": {
     "allowNavigation": [
       "*"

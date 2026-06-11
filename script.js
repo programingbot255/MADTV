@@ -244,7 +244,10 @@ function loadPlaylist() {
     `${playlistOnline}?t=${new Date().getTime()}`,
     `https://raw.githubusercontent.com/programingbot255/MADTV/main/channels.m3u?t=${new Date().getTime()}`,
     playlistLocal,
-    "channels.m3u"
+    "IP-TV.m3u",
+    "channels.m3u",
+    "./IP-TV.m3u",
+    "./channels.m3u"
   ];
 
   function tryFetch(index) {
