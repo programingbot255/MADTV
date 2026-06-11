@@ -27,9 +27,6 @@ if (!fs.existsSync(destDir)) {
 
 // Copy other files
 const filesToCopy = [
-  'index.html',
-  'script.js',
-  'style.css',
   'channels.m3u',
   'IP-TV.m3u',
   'LICENSE'
@@ -41,26 +38,6 @@ for (const file of filesToCopy) {
     fs.copyFileSync(srcFile, path.join(destDir, file));
     console.log(`Copied ${file} to dist/`);
   }
-}
-
-// Apply cache busting to copied files in dist/
-let version = '1.1.2';
-try {
-  const pkg = JSON.parse(fs.readFileSync(path.join(srcDir, 'package.json'), 'utf8'));
-  version = pkg.version || '1.1.2';
-} catch (e) {
-  console.warn('Could not read package.json for cache busting:', e);
-}
-const timestamp = Date.now();
-const cacheBustSuffix = `?v=${version}_${timestamp}`;
-
-const destHtmlPath = path.join(destDir, 'index.html');
-if (fs.existsSync(destHtmlPath)) {
-  let html = fs.readFileSync(destHtmlPath, 'utf8');
-  html = html.replace(/href="style\.css"/g, `href="style.css${cacheBustSuffix}"`);
-  html = html.replace(/src="script\.js"/g, `src="script.js${cacheBustSuffix}"`);
-  fs.writeFileSync(destHtmlPath, html, 'utf8');
-  console.log(`Cache-busted index.html template with suffix ${cacheBustSuffix}`);
 }
 
 // Copy folders
