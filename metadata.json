@@ -1,0 +1,6 @@
+{
+  "name": "MAD WATCH TV",
+  "description": "Premium Online TV Streaming Platform",
+  "requestFramePermissions": [],
+  "majorCapabilities": ["MAJOR_CAPABILITY_SERVER_SIDE_GEMINI_API"]
+}

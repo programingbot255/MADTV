@@ -1,0 +1,14 @@
+{
+  "appId": "com.madwatchtv.app",
+  "appName": "MAD WATCH TV",
+  "webDir": "www",
+  "server": {
+    "allowNavigation": [
+      "*"
+    ],
+    "cleartext": true
+  },
+  "android": {
+    "allowMixedContent": true
+  }
+}
