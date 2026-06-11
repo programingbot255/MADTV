@@ -46,5 +46,5 @@ jobs:
       - name: Upload APK Artifact
         uses: actions/upload-artifact@v4
         with:
-          name: AlphaTV-App
-          path: android/app/build/outputs/apk/debug/AlphaTV-debug.apk
+          name: MADWatchTV-App
+          path: android/app/build/outputs/apk/debug/MAD_WATCH_TV-debug.apk

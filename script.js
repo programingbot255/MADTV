@@ -1,7 +1,7 @@
 /* VARIABLES */
 // const playlistOnline = "channels.m3u";
-const playlistOnline = "https://raw.githubusercontent.com/programingbot255/MADTV/main/channels.m3u";
-const playlistLocal = "channels.m3u";
+const playlistOnline = "https://raw.githubusercontent.com/programingbot255/MADTV/main/IP-TV.m3u";
+const playlistLocal = "IP-TV.m3u";
 
 let channels = [];
 let filteredChannels = [];
@@ -240,17 +240,29 @@ function loadPlaylist() {
   loader.classList.remove("hidden");
   loader.querySelector("span").innerText = "Loading playlist...";
 
-  fetch(`${playlistOnline}?t=${new Date().getTime()}`)
-    .then(response => {
-      if (!response.ok) {
-        throw new Error("Online playlist response error");
-      }
-      return response.text();
-    })
-    .catch(err => {
-      console.log("Could not load online playlist, falling back to local file...", err);
-      return fetch(playlistLocal).then(response => response.text());
-    })
+  const sources = [
+    `${playlistOnline}?t=${new Date().getTime()}`,
+    `https://raw.githubusercontent.com/programingbot255/MADTV/main/channels.m3u?t=${new Date().getTime()}`,
+    playlistLocal,
+    "channels.m3u"
+  ];
+
+  function tryFetch(index) {
+    if (index >= sources.length) {
+      return Promise.reject(new Error("All playlist sources failed"));
+    }
+    return fetch(sources[index])
+      .then(response => {
+        if (!response.ok) throw new Error("Status " + response.status);
+        return response.text();
+      })
+      .catch(err => {
+        console.log(`Failed to load playlist from ${sources[index]}:`, err);
+        return tryFetch(index + 1);
+      });
+  }
+
+  tryFetch(0)
     .then((data) => {
       const lines = data.split("\n");
       channels = [];
