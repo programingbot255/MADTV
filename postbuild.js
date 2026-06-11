@@ -27,6 +27,9 @@ if (!fs.existsSync(destDir)) {
 
 // Copy other files
 const filesToCopy = [
+  'index.html',
+  'script.js',
+  'style.css',
   'channels.m3u',
   'IP-TV.m3u',
   'LICENSE'

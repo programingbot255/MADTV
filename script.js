@@ -1339,17 +1339,21 @@ function handleUpdateDownload(event) {
 }
 
 /* DISCLAIMER POPUP MODAL LOGIC */
+let disclaimerTimeout = null;
+
 function checkDisclaimer() {
   const accepted = localStorage.getItem("mad_watch_tv_disclaimer_accepted");
   if (!accepted) {
     const modal = document.getElementById("disclaimerModal");
     if (modal) {
+      modal.style.display = ""; // Reset display style
       modal.classList.remove("hidden");
       modal.setAttribute("aria-hidden", "false");
       document.body.style.overflow = "hidden";
       
       // Auto close after 3 seconds (3000ms) and save preference
-      setTimeout(() => {
+      if (disclaimerTimeout) clearTimeout(disclaimerTimeout);
+      disclaimerTimeout = setTimeout(() => {
         if (modal && !modal.classList.contains("hidden")) {
           acceptDisclaimer();
         }
@@ -1367,6 +1371,7 @@ function showDisclaimerModal(event) {
   if (event) event.preventDefault();
   const modal = document.getElementById("disclaimerModal");
   if (modal) {
+    modal.style.display = ""; // Reset display style
     modal.classList.remove("hidden");
     modal.setAttribute("aria-hidden", "false");
     document.body.style.overflow = "hidden";
@@ -1376,6 +1381,12 @@ function showDisclaimerModal(event) {
 function closeDisclaimerModal() {
   const modal = document.getElementById("disclaimerModal");
   if (modal) {
+    if (disclaimerTimeout) {
+      clearTimeout(disclaimerTimeout);
+      disclaimerTimeout = null;
+    }
+    // Set display to none immediately to bypass any CSS transitions for instant closing
+    modal.style.display = "none";
     modal.classList.add("hidden");
     modal.setAttribute("aria-hidden", "true");
     document.body.style.overflow = "";
