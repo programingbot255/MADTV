@@ -234,82 +234,108 @@ function setupControlAutohide() {
   playerWrapper.addEventListener("touchstart", showControls);
 }
 
+/* PARSE M3U PLAYLIST DATA */
+function parseM3U(data) {
+  const lines = data.split("\n");
+  const parsedChannels = [];
+
+  for (let i = 0; i < lines.length; i++) {
+    const line = lines[i].trim();
+    if (line.startsWith("#EXTINF")) {
+      const info = line;
+
+      // Find the next non-empty line that doesn't start with '#'
+      let url = "";
+      for (let j = i + 1; j < lines.length; j++) {
+        const nextLine = lines[j].trim();
+        if (nextLine && !nextLine.startsWith("#")) {
+          url = nextLine;
+          break;
+        }
+      }
+
+      if (!url) continue;
+
+      // Extract name (part after the last comma)
+      const nameParts = info.split(",");
+      const name = nameParts[nameParts.length - 1].trim() || "Unknown Channel";
+
+      let logo = "";
+      const logoMatch = info.match(/tvg-logo="([^"]*)"/);
+      if (logoMatch) {
+        logo = logoMatch[1].trim();
+      }
+
+      let categories = ["Other"];
+      const groupMatch = info.match(/group-title="([^"]*)"/);
+      if (groupMatch) {
+        categories = groupMatch[1].split(",").map(c => c.trim()).filter(Boolean);
+        if (categories.length === 0) {
+          categories = ["Other"];
+        }
+      }
+
+      parsedChannels.push({
+        name,
+        url,
+        logo,
+        categories
+      });
+    }
+  }
+  return parsedChannels;
+}
+
 /* LOAD M3U PLAYLIST */
 function loadPlaylist() {
   const loader = document.getElementById("playerLoader");
-  loader.classList.remove("hidden");
-  loader.querySelector("span").innerText = "Loading playlist...";
+  if (loader) {
+    loader.classList.remove("hidden");
+    const span = loader.querySelector("span");
+    if (span) {
+      span.innerText = "Loading playlist...";
+    }
+  }
 
+  // Attempt to load the online playlist
   fetch(`${playlistOnline}?t=${new Date().getTime()}`)
     .then(response => {
       if (!response.ok) {
-        throw new Error("Online playlist response error (status: " + response.status + ")");
+        throw new Error("Online playlist HTTP error (status: " + response.status + ")");
       }
       return response.text();
     })
-    .catch(err => {
-      console.warn("Could not load online playlist, falling back to local file...", err);
-      return fetch(playlistLocal).then(response => {
-        if (!response.ok) {
-          throw new Error("Local fallback playlist response error (status: " + response.status + ")");
-        }
-        return response.text();
-      });
+    .then(data => {
+      const parsed = parseM3U(data);
+      if (parsed.length === 0) {
+        throw new Error("No channels found in online playlist");
+      }
+      return parsed;
     })
-    .then((data) => {
-      const lines = data.split("\n");
-      channels = [];
-
-      for (let i = 0; i < lines.length; i++) {
-        const line = lines[i].trim();
-        if (line.startsWith("#EXTINF")) {
-          const info = line;
-
-          // Find the next non-empty line that doesn't start with '#'
-          let url = "";
-          for (let j = i + 1; j < lines.length; j++) {
-            const nextLine = lines[j].trim();
-            if (nextLine && !nextLine.startsWith("#")) {
-              url = nextLine;
-              break;
-            }
+    .catch(err => {
+      console.warn("Could not load or parse online playlist, falling back to local file...", err);
+      // Secondary fallback to local file
+      return fetch(playlistLocal)
+        .then(response => {
+          if (!response.ok) {
+            throw new Error("Local fallback playlist response error (status: " + response.status + ")");
           }
-
-          if (!url) continue;
-
-          // Extract name (part after the last comma)
-          const nameParts = info.split(",");
-          const name = nameParts[nameParts.length - 1].trim() || "Unknown Channel";
-
-          let logo = "";
-          const logoMatch = info.match(/tvg-logo="([^"]*)"/);
-          if (logoMatch) {
-            logo = logoMatch[1].trim();
+          return response.text();
+        })
+        .then(data => {
+          const parsed = parseM3U(data);
+          if (parsed.length === 0) {
+            throw new Error("No channels found in local fallback playlist");
           }
+          return parsed;
+        });
+    })
+    .then(parsedChannels => {
+      channels = parsedChannels;
 
-          let categories = ["Other"];
-          const groupMatch = info.match(/group-title="([^"]*)"/);
-          if (groupMatch) {
-            categories = groupMatch[1].split(",").map(c => c.trim()).filter(Boolean);
-            if (categories.length === 0) {
-              categories = ["Other"];
-            }
-          }
-
-          channels.push({
-            name,
-            url,
-            logo,
-            categories
-          });
-        }
+      if (loader) {
+        loader.classList.add("hidden");
       }
-
-      if (channels.length === 0) {
-        throw new Error("No channels parsed from the playlist");
-      }
-
-      loader.classList.add("hidden");
       renderCategories();
       filterAndSearch();
 
@@ -320,8 +346,13 @@ function loadPlaylist() {
     })
     .catch(err => {
       console.error("Failed to load playlist:", err);
-      loader.classList.remove("hidden");
-      loader.querySelector("span").innerText = "Failed to load playlist ⚠️";
+      if (loader) {
+        loader.classList.remove("hidden");
+        const span = loader.querySelector("span");
+        if (span) {
+          span.innerText = "Failed to load playlist ⚠️";
+        }
+      }
     });
 }
 
@@ -1179,6 +1210,7 @@ function setupViewModeToggle() {
 
 /* MOBILE SMART APP BANNER & DYNAMIC APK DOWNLOAD */
 let latestApkUrl = "https://github.com/programingbot255/MADTV/releases";
+let appBannerTimeout = null;
 
 function setupMobileAppBanner() {
   if (window.Capacitor) return;
@@ -1211,6 +1243,12 @@ function setupMobileAppBanner() {
     if (banner) {
       setTimeout(() => {
         banner.classList.remove("hidden");
+        // Auto-dismiss the popup after 3 seconds (3000ms) of being shown
+        appBannerTimeout = setTimeout(() => {
+          if (banner && !banner.classList.contains("hidden")) {
+            banner.classList.add("hidden");
+          }
+        }, 3000);
       }, 2000);
     }
   }
@@ -1221,6 +1259,10 @@ function closeAppBanner() {
   if (banner) {
     banner.classList.add("hidden");
     localStorage.setItem("mad_watch_tv_hide_app_banner", "true");
+  }
+  if (appBannerTimeout) {
+    clearTimeout(appBannerTimeout);
+    appBannerTimeout = null;
   }
 }
 
